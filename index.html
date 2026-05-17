@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Juego educativo de habilidades sociales" />
+  <title>Responde Conmigo</title>
+  <link rel="stylesheet" href="estilos.css" />
+</head>
+<body>
+
+  <!-- ══ BOTÓN FLOTANTE MÚSICA ══ -->
+  <button id="btn-musica" onclick="toggleMusica()" title="Música">🎵</button>
+
+  <!-- ══════════════════════════
+       INICIO
+  ══════════════════════════ -->
+  <div id="s-inicio" class="screen active">
+    <div class="estrella-deco">⭐</div>
+    <img class="game-img animar-entrada" src="img/responde_conmigo.png" alt="Grupo de personas sonriendo">
+    <div class="title animar-entrada">Responde Conmigo</div>
+    <div class="subtitle animar-entrada">Aprende habilidades sociales eligiendo la mejor respuesta en cada situación</div>
+    <button class="btn primary animar-entrada" onclick="show('s-menu')">🎮 Jugar</button>
+    <button class="btn animar-entrada" onclick="show('s-instrucciones')">📖 Instrucciones</button>
+    <button class="btn animar-entrada" onclick="show('s-stats')">📊 Estadísticas</button>
+  </div>
+
+  <!-- ══════════════════════════
+       INSTRUCCIONES
+  ══════════════════════════ -->
+  <div id="s-instrucciones" class="screen">
+    <div class="title" style="font-size:20px">📋 Cómo jugar</div>
+    <div class="sit-box">
+      Lee cada situación y elige la mejor respuesta. Recibirás una explicación de por qué fue correcta o incorrecta.
+      <br><br>
+      ⏱️ <strong>Temporizador:</strong> tienes 30 segundos por pregunta. ¡La velocidad da puntos extra!
+      <br><br>
+      🔥 <strong>Racha:</strong> responder correctamente seguido te da puntos bonus.
+      <br><br>
+      🥇 <strong>Medallas:</strong> oro (1er intento), plata (2do), bronce (3+).
+      <br><br>
+      ⚠️ Solo avanzas si aciertas. ¡Aprende con cada intento!
+    </div>
+    <button class="btn" onclick="show('s-inicio')">Volver</button>
+  </div>
+
+  <!-- ══════════════════════════
+       MENÚ DE NIVELES
+  ══════════════════════════ -->
+  <div id="s-menu" class="screen">
+    <div class="menu-header">
+      <div class="title" style="font-size:20px">🗺️ Niveles</div>
+      <div id="menu-nombre" class="menu-nombre"></div>
+    </div>
+
+    <!-- Barra de progreso general -->
+    <div class="progreso-wrapper">
+      <div class="progreso-barra">
+        <div id="progreso-general" class="progreso-fill"></div>
+      </div>
+      <div id="progreso-txt" class="progreso-txt">0/10 niveles</div>
+    </div>
+
+    <div class="levels-grid" id="levels-grid"></div>
+
+    <div class="menu-stats-row">
+      <div class="score-badge" id="menu-score">⭐ 0 pts</div>
+      <div class="racha-badge" id="menu-racha">🔥 Racha: 0</div>
+    </div>
+
+    <div class="menu-fecha-row">
+      <span id="menu-fecha" class="menu-fecha"></span>
+      <button class="btn-guardar" onclick="guardarProgreso()">💾 Guardar</button>
+    </div>
+
+    <button class="btn" id="btn-repaso" style="display:none" onclick="iniciarRepaso()">Repasar niveles fallidos</button>
+    <button class="btn" onclick="show('s-stats')">📊 Estadísticas</button>
+    <button class="btn" onclick="show('s-inicio')">🏠 Inicio</button>
+  </div>
+
+  <!-- ══════════════════════════
+       NIVEL ACTIVO
+  ══════════════════════════ -->
+  <div id="s-nivel" class="screen">
+
+    <!-- Barra de progreso del nivel -->
+    <div class="nivel-progress-track">
+      <div id="barra-nivel" class="nivel-progress-fill"></div>
+    </div>
+
+    <div class="top-bar">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="btn-volver-menu" onclick="show('s-menu')">Menú</button>
+        <br> </br>
+        <div class="progress" id="nivel-num">Nivel 1 de 10</div>
+      </div>
+      <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;">
+        <div class="racha-badge" id="racha-badge">🔥 0</div>
+        <div class="intentos-badge" id="intentos-badge">0 intentos</div>
+        <div class="score-badge" id="nivel-score">⭐ 0 pts</div>
+      </div>
+    </div>
+
+    <!-- Temporizador -->
+    <div class="timer-wrapper">
+      <div class="timer-track">
+        <div id="timer-bar" class="timer-fill"></div>
+      </div>
+      <div id="timer-txt" class="timer-txt">30s</div>
+    </div>
+
+    <img class="game-img" id="nivel-img" src="" alt="">
+    <div class="sit-box" id="situacion-text"></div>
+    <div class="options" id="opciones"></div>
+
+    <div id="retro-box" class="retro-box" style="display:none">
+      <div class="retro-label" id="retro-label"></div>
+      <div id="retro-texto"></div>
+    </div>
+
+    <div class="hint-msg" id="hint-msg" style="display:none">
+      💡 Lee la explicación e intenta de nuevo.
+    </div>
+
+    <button class="btn primary" id="btn-siguiente" style="display:none" onclick="siguiente()">Siguiente</button>
+    <button class="btn" id="btn-reintentar" style="display:none" onclick="reintentar()">Intentar de nuevo</button>
+    <button class="btn btn-guardar-nivel" onclick="guardarProgreso()">Guardar</button>
+
+  </div>
+
+  <!-- ══════════════════════════
+       PANTALLA FINAL
+  ══════════════════════════ -->
+  <div id="s-final" class="screen">
+    <div class="confeti" id="confeti"></div>
+    <img class="game-img animar-rebote" src="img/lograste.png" alt="Celebración">
+    <div class="title animar-rebote" id="final-nombre">🎉 ¡Lo lograste!</div>
+    <div class="final-resumen" id="final-score"></div>
+    <button class="btn primary" onclick="compartirResultado()">Compartir resultado</button>
+    <button class="btn" onclick="reiniciar()">Jugar de nuevo</button>
+    <button class="btn" onclick="show('s-stats')">Ver estadísticas</button>
+    <button class="btn" onclick="show('s-inicio')">Inicio</button>
+  </div>
+
+  <!-- ══════════════════════════
+       ESTADÍSTICAS
+  ══════════════════════════ -->
+  <div id="s-stats" class="screen">
+    <div class="title" style="font-size:20px">📊 Historial de partidas</div>
+    <div id="stats-lista" class="stats-lista"></div>
+    <button class="btn" style="color:#ef4444;border-color:rgba(239,68,68,0.3)" onclick="borrarEstadisticas()">Borrar historial</button>
+    <button class="btn" onclick="show('s-inicio')">Volver</button>
+  </div>
+
+  <!-- ══ OVERLAY ══ -->
+  <div id="overlay-feedback" class="overlay-feedback" style="display:none">
+    <div id="overlay-icono"></div>
+  </div>
+
+  <!-- ══ MODAL GUARDAR/CARGAR ══ -->
+  <div id="modal-carga" class="modal-overlay" style="display:none">
+    <div class="modal-box animar-rebote">
+      <div class="modal-icono">💾</div>
+      <div class="modal-titulo">¡Partida guardada!</div>
+      <div class="modal-info" id="modal-info"></div>
+      <button class="btn primary" onclick="continuarPartida()">Continuar partida</button>
+      <button class="btn" onclick="nuevaPartida()">Nueva partida</button>
+    </div>
+  </div>
+
+  <!-- ══ MODAL NOMBRE ══ -->
+  <div id="modal-nombre" class="modal-overlay" style="display:none">
+    <div class="modal-box animar-rebote">
+      <div class="modal-icono">👤</div>
+      <div class="modal-titulo">¿Cómo te llamas?</div>
+      <div class="subtitle" style="color:#5a5480;text-align:center">Tu nombre aparecerá en el historial y en los resultados</div>
+      <input id="input-nombre" class="input-nombre" type="text" placeholder="Escribe tu nombre..." maxlength="20"
+        onkeydown="if(event.key==='Enter')confirmarNombre()">
+      <button class="btn primary" onclick="confirmarNombre()">¡Listo!</button>
+      <button class="btn" onclick="confirmarNombre()">Continuar sin nombre</button>
+    </div>
+  </div>
+
+  <!-- ══ TOAST ══ -->
+  <div id="toast-msg"></div>
+
+  <script src="juego.js"></script>
+</body>
+</html>
