@@ -241,7 +241,7 @@ function mostrarModalCarga() {
 }
 
 function mostrarModalNombre() {
-  if (nombreJugador) { show('s-menu'); return; }
+  if (nombreJugador) { show('s-menu'); return; } // ← ESTA LÍNEA BLOQUEA
   document.getElementById('modal-nombre').style.display = 'flex';
   setTimeout(() => document.getElementById('input-nombre').focus(), 200);
 }
@@ -274,8 +274,12 @@ function nuevaPartida() {
   localStorage.removeItem(NOMBRE_KEY);
   const input = document.getElementById('input-nombre');
   if (input) input.value = '';
-  cerrarModal('modal-carga');
-  mostrarModalNombre();
+cerrarModal('modal-carga');
+  setTimeout(() => {
+    document.getElementById('modal-nombre').style.display = 'flex';
+    const input = document.getElementById('input-nombre');
+    if (input) { input.value = ''; input.focus(); }
+  }, 200);
 }
 
 function cerrarModal(id) {
