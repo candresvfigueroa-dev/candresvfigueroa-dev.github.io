@@ -270,6 +270,10 @@ function nuevaPartida() {
   puntaje = 0; completados = []; nivelActual = 0;
   intentosNivel = 0; rachaActual = 0; mejorRacha = 0;
   intentosPorNivel = {};
+  nombreJugador = '';
+  localStorage.removeItem(NOMBRE_KEY);
+  const input = document.getElementById('input-nombre');
+  if (input) input.value = '';
   cerrarModal('modal-carga');
   mostrarModalNombre();
 }
