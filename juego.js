@@ -828,6 +828,6 @@ function reiniciar() {
   const input = document.getElementById('input-nombre');
   if (input) input.value='';
   document.getElementById('modal-nombre').style.display = 'flex';
-  show('s-inicio');
-  if (input) setTimeout(()=>input.focus(), 300);
+show('s-inicio');
+setTimeout(()=>mostrarModalNombre(), 300);
 }
