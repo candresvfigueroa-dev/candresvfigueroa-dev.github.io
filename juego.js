@@ -821,5 +821,13 @@ function reiniciar() {
   puntaje=0; completados=[]; nivelActual=0;
   intentosNivel=0; rachaActual=0; mejorRacha=0;
   intentosPorNivel={}; modoRepaso=false;
-  show('s-menu');
+  nombreJugador='';
+  localStorage.removeItem(NOMBRE_KEY);
+
+  // Limpiar el input y mostrar modal de nombre
+  const input = document.getElementById('input-nombre');
+  if (input) input.value='';
+  document.getElementById('modal-nombre').style.display = 'flex';
+  show('s-inicio');
+  if (input) setTimeout(()=>input.focus(), 300);
 }
